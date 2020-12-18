@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "486767681481",
+    "firebase_url": "https://mysugarbud.firebaseio.com",
+    "project_id": "mysugarbud",
+    "storage_bucket": "mysugarbud.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486767681481:android:a2b1ee21ba5121a9749218",
+        "android_client_info": {
+          "package_name": "com.bit.mysugarbud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486767681481-j789u36da6miqek8b946qdmrafv99ps7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXU94qYjAd4ZPzdavQ4CizLmuig3iHOFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486767681481-j789u36da6miqek8b946qdmrafv99ps7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

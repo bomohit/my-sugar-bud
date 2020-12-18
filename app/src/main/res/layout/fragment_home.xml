@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/rose"
+    tools:context=".ui.home.HomeFragment">
+
+    <TextView
+        android:id="@+id/text_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ramijemli.percentagechartview.PercentageChartView
+        android:id="@+id/weight_id"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/homeWeight"
+        app:layout_constraintEnd_toStartOf="@+id/glucose_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/homeWeight"
+        app:pcv_animDuration="800"
+        app:pcv_animInterpolator="anticipate_overshoot"
+        app:pcv_backgroundBarColor="@color/bright_rose"
+        app:pcv_mode="ring"
+        app:pcv_orientation="clockwise"
+        app:pcv_progressColor="@color/progress"
+        app:pcv_startAngle="90"
+        app:pcv_textSize="0dp" />
+
+    <com.ramijemli.percentagechartview.PercentageChartView
+        android:id="@+id/glucose_id"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/homeGlucose"
+        app:pcv_animDuration="800"
+        app:pcv_animInterpolator="anticipate_overshoot"
+        app:pcv_backgroundBarColor="@color/bright_rose"
+        app:pcv_mode="ring"
+        app:pcv_orientation="clockwise"
+        app:pcv_progressColor="@color/progress"
+        app:pcv_startAngle="90"
+        app:pcv_textSize="0dp" />
+
+    <com.ramijemli.percentagechartview.PercentageChartView
+        android:id="@+id/blood_id"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/homeBlood"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/glucose_id"
+        app:layout_constraintTop_toTopOf="@+id/homeBlood"
+        app:pcv_animDuration="800"
+        app:pcv_animInterpolator="anticipate_overshoot"
+        app:pcv_backgroundBarColor="@color/bright_rose"
+        app:pcv_mode="ring"
+        app:pcv_orientation="clockwise"
+        app:pcv_progressColor="@color/progress"
+        app:pcv_startAngle="90"
+        app:pcv_textSize="0dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add logs"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_home" />
+
+    <TextView
+        android:id="@+id/homeGlucose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="140 "
+        android:textColor="#0C0C0C"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/text_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/homeWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="65"
+        android:textColor="#0C0C0C"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/text_home"
+        app:layout_constraintEnd_toEndOf="@+id/weight_id"
+        app:layout_constraintStart_toStartOf="@+id/weight_id"
+        app:layout_constraintTop_toBottomOf="@+id/glucose_id" />
+
+    <TextView
+        android:id="@+id/homeBlood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="100"
+        android:textColor="#0C0C0C"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/text_home"
+        app:layout_constraintEnd_toEndOf="@+id/blood_id"
+        app:layout_constraintStart_toStartOf="@+id/blood_id"
+        app:layout_constraintTop_toBottomOf="@+id/glucose_id" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="mg/dL"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/homeGlucose"
+        app:layout_constraintStart_toStartOf="@+id/homeGlucose"
+        app:layout_constraintTop_toBottomOf="@+id/homeGlucose" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_rose"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Daily"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:text="Glucose"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/glucose_id"
+        app:layout_constraintEnd_toEndOf="@+id/glucose_id"
+        app:layout_constraintStart_toStartOf="@+id/glucose_id" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:text="Weight"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/weight_id"
+        app:layout_constraintEnd_toEndOf="@+id/weight_id"
+        app:layout_constraintStart_toStartOf="@+id/weight_id" />
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:text="Blood Pressure"
+        android:textColor="#101010"
+        app:layout_constraintBottom_toTopOf="@+id/blood_id"
+        app:layout_constraintEnd_toEndOf="@+id/blood_id"
+        app:layout_constraintStart_toStartOf="@+id/blood_id" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.bit.mysugarbud.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_logs_Fragment"
+            app:destination="@id/logs_Fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_diets"
+        android:name="com.bit.mysugarbud.ui.diets.DietFragment"
+        android:label="@string/menu_diets"
+        tools:layout="@layout/fragment_diet" />
+
+    <fragment
+        android:id="@+id/nav_locations"
+        android:name="com.bit.mysugarbud.ui.slideshow.LocationsFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_locations" />
+    <fragment
+        android:id="@+id/logs_Fragment"
+        android:name="com.bit.mysugarbud.ui.home.LogsFragment"
+        android:label="@string/logs_fragment"
+        tools:layout="@layout/fragment_logs" />
+    <fragment
+        android:id="@+id/ExerciseFragment"
+        android:name="com.bit.mysugarbud.ui.exercise.ExerciseFragment"
+        android:label="@string/exercise_fragment"
+        tools:layout="@layout/fragment_exercise" />
+</navigation>
