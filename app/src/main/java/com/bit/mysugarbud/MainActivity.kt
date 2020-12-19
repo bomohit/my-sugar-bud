@@ -28,18 +28,18 @@ import com.bit.mysugarbud.ui.login.selection
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    var uid = "dtebgR2JYVhSCwffiL8R"
-    var username = "Villashenee"
-//    var uid = ""
-//    var username = ""
+//    var uid = "dtebgR2JYVhSCwffiL8R"
+//    var username = "Villashenee"
+    var uid = ""
+    var username = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         centreTitle()
-//        uid = intent.getStringExtra("uid").toString()
-//        username = intent.getStringExtra("username").toString()
+        uid = intent.getStringExtra("uid").toString()
+        username = intent.getStringExtra("username").toString()
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
