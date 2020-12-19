@@ -36,4 +36,9 @@
         android:name="com.bit.mysugarbud.ui.exercise.ExerciseFragment"
         android:label="@string/exercise_fragment"
         tools:layout="@layout/fragment_exercise" />
+    <fragment
+        android:id="@+id/nav_reminder"
+        android:name="com.bit.mysugarbud.ui.reminder.ReminderFragment"
+        android:label="@string/reminder_fragment"
+        tools:layout="@layout/fragment_reminder" />
 </navigation>

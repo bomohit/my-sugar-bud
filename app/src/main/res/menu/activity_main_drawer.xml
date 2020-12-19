@@ -21,5 +21,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Exercise"
             />
+        <item
+            android:id="@+id/nav_reminder"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Reminder"
+            />
     </group>
 </menu>
