@@ -1,14 +1,12 @@
 package com.bit.mysugarbud.ui.reminder
 
-import android.app.AlarmManager
-import android.app.Dialog
-import android.app.PendingIntent
-import android.app.TimePickerDialog
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log.d
 import androidx.fragment.app.Fragment
@@ -20,6 +18,10 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bit.mysugarbud.MainActivity
@@ -27,6 +29,7 @@ import com.bit.mysugarbud.R
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.jar.Manifest
 
 class ReminderFragment : Fragment() {
     var day = mutableListOf<String?>()
@@ -37,9 +40,12 @@ class ReminderFragment : Fragment() {
     var usedT = 0
     var endT = 0
     var slot = mutableListOf<Int>()
+
+    private val CHANNEL_ID = "channel_id_mysugarbud"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        createNotificationChannel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -158,7 +164,7 @@ class ReminderFragment : Fragment() {
                                 val profile = "$uid Alarm ${slot[0]}"
                                 reminder.add(Reminder(profile, title, time, selDay.toString()))
                                 rv(requireView())
-                                createAlarm()
+                                createAlarm(title)
                             }
                             d("bomoh", "uid: $title, day:$day, selDay:$selDay")
 
@@ -183,7 +189,7 @@ class ReminderFragment : Fragment() {
         }
     }
 
-    private fun createAlarm() {
+    private fun createAlarm(title: String) {
         val cal = Calendar.getInstance()
         val prof = (activity as MainActivity).uid
         val sharedPreferences = requireActivity().getSharedPreferences("$prof Alarm ${slot[0]}", Context.MODE_PRIVATE)
@@ -197,92 +203,128 @@ class ReminderFragment : Fragment() {
                 // REQUEST CODE DIFFERENTIATE EACH
                 val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 val intent = Intent(context, Receiver::class.java)
-                intent.putExtra("pass", "Bomoh iT : $t")
+                intent.putExtra("Title", "$title")
                 val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 //            alarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000, pendingIntent)
                 usedT += 1
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
 
             }
-//            else if ( i == "Tuesday") {
-//                cal.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY)
-//                cal.set(Calendar.HOUR_OF_DAY, H)
-//                cal.set(Calendar.MINUTE, M)
-//                cal.set(Calendar.SECOND, 0)
-//                cal.set(Calendar.MILLISECOND, 0)
-//                // REQUEST CODE DIFFERENTIATE EACH
-//                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//                val intent = Intent(context, Receiver::class.java)
-//                intent.putExtra("pass", "Bomoh iT : $t")
-//                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//                usedT += 1
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-//            } else if ( i == "Wednesday") {
-//                cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY)
-//                cal.set(Calendar.HOUR_OF_DAY, H)
-//                cal.set(Calendar.MINUTE, M)
-//                cal.set(Calendar.SECOND, 0)
-//                cal.set(Calendar.MILLISECOND, 0)
-//                // REQUEST CODE DIFFERENTIATE EACH
-//                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//                val intent = Intent(context, Receiver::class.java)
-//                intent.putExtra("pass", "Bomoh iT : $t")
-//                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//                usedT += 1
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-//            } else if ( i == "Thursday") {
-//                cal.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY)
-//                cal.set(Calendar.HOUR_OF_DAY, H)
-//                cal.set(Calendar.MINUTE, M)
-//                cal.set(Calendar.SECOND, 0)
-//                cal.set(Calendar.MILLISECOND, 0)
-//                // REQUEST CODE DIFFERENTIATE EACH
-//                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//                val intent = Intent(context, Receiver::class.java)
-//                intent.putExtra("pass", "Bomoh iT : $t")
-//                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//                usedT += 1
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-//            } else if ( i == "Friday") {
-//                cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY)
-//                cal.set(Calendar.HOUR_OF_DAY, H)
-//                cal.set(Calendar.MINUTE, M)
-//                cal.set(Calendar.SECOND, 0)
-//                cal.set(Calendar.MILLISECOND, 0)
-//                // REQUEST CODE DIFFERENTIATE EACH
-//                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//                val intent = Intent(context, Receiver::class.java)
-//                intent.putExtra("pass", "Bomoh iT : $t")
-//                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//                usedT += 1
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-//            }  else if ( i == "Saturday") {
-//                cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
-//                cal.set(Calendar.HOUR_OF_DAY, H)
-//                cal.set(Calendar.MINUTE, M)
-//                cal.set(Calendar.SECOND, 0)
-//                cal.set(Calendar.MILLISECOND, 0)
-//                // REQUEST CODE DIFFERENTIATE EACH
-//                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//                val intent = Intent(context, Receiver::class.java)
-//                intent.putExtra("pass", "Bomoh iT : $t")
-//                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//                usedT += 1
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-//            } else if ( i == "Sunday") {
-//                cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
-//                cal.set(Calendar.HOUR_OF_DAY, H)
-//                cal.set(Calendar.MINUTE, M)
-//                cal.set(Calendar.SECOND, 0)
-//                cal.set(Calendar.MILLISECOND, 0)
-//                // REQUEST CODE DIFFERENTIATE EACH
-//                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//                val intent = Intent(context, Receiver::class.java)
-//                intent.putExtra("pass", "Bomoh iT : $t")
-//                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//                usedT += 1
-//                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
-//            }
+            else if ( i == "Tuesday") {
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY)
+                cal.set(Calendar.HOUR_OF_DAY, H)
+                cal.set(Calendar.MINUTE, M)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+
+                if (cal.timeInMillis < System.currentTimeMillis() || cal.before(GregorianCalendar())) {
+                    cal.set(Calendar.HOUR_OF_DAY, H +24)
+                    cal.add(GregorianCalendar.DAY_OF_MONTH, 7)
+                }
+
+                // REQUEST CODE DIFFERENTIATE EACH
+                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(context, Receiver::class.java)
+                intent.putExtra("Title", "$title")
+                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                usedT += 1
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+            } else if ( i == "Wednesday") {
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY)
+                cal.set(Calendar.HOUR_OF_DAY, H)
+                cal.set(Calendar.MINUTE, M)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+
+                if (cal.timeInMillis < System.currentTimeMillis() || cal.before(GregorianCalendar())) {
+                    cal.set(Calendar.HOUR_OF_DAY, H +24)
+                    cal.add(GregorianCalendar.DAY_OF_MONTH, 7)
+                }
+
+                // REQUEST CODE DIFFERENTIATE EACH
+                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(context, Receiver::class.java)
+                intent.putExtra("Title", "$title")
+                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                usedT += 1
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+            } else if ( i == "Thursday") {
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY)
+                cal.set(Calendar.HOUR_OF_DAY, H)
+                cal.set(Calendar.MINUTE, M)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+
+                if (cal.timeInMillis < System.currentTimeMillis() || cal.before(GregorianCalendar())) {
+                    cal.set(Calendar.HOUR_OF_DAY, H +24)
+                    cal.add(GregorianCalendar.DAY_OF_MONTH, 7)
+                }
+
+                // REQUEST CODE DIFFERENTIATE EACH
+                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(context, Receiver::class.java)
+                intent.putExtra("Title", "$title")
+                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                usedT += 1
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+            } else if ( i == "Friday") {
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY)
+                cal.set(Calendar.HOUR_OF_DAY, H)
+                cal.set(Calendar.MINUTE, M)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+
+                if (cal.timeInMillis < System.currentTimeMillis() || cal.before(GregorianCalendar())) {
+                    cal.set(Calendar.HOUR_OF_DAY, H +24)
+                    cal.add(GregorianCalendar.DAY_OF_MONTH, 7)
+                }
+
+                // REQUEST CODE DIFFERENTIATE EACH
+                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(context, Receiver::class.java)
+                intent.putExtra("Title", "$title")
+                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                usedT += 1
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+            }  else if ( i == "Saturday") {
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
+                cal.set(Calendar.HOUR_OF_DAY, H)
+                cal.set(Calendar.MINUTE, M)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+
+                if (cal.timeInMillis < System.currentTimeMillis() || cal.before(GregorianCalendar())) {
+                    cal.set(Calendar.HOUR_OF_DAY, H +24)
+                    cal.add(GregorianCalendar.DAY_OF_MONTH, 7)
+                }
+
+                // REQUEST CODE DIFFERENTIATE EACH
+                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(context, Receiver::class.java)
+                intent.putExtra("Title", "$title")
+                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                usedT += 1
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+            } else if ( i == "Sunday") {
+                cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+                cal.set(Calendar.HOUR_OF_DAY, H)
+                cal.set(Calendar.MINUTE, M)
+                cal.set(Calendar.SECOND, 0)
+                cal.set(Calendar.MILLISECOND, 0)
+
+                if (cal.timeInMillis < System.currentTimeMillis() || cal.before(GregorianCalendar())) {
+                    cal.set(Calendar.HOUR_OF_DAY, H +24)
+                    cal.add(GregorianCalendar.DAY_OF_MONTH, 7)
+                }
+
+                // REQUEST CODE DIFFERENTIATE EACH
+                val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(context, Receiver::class.java)
+                intent.putExtra("Title", "$title")
+                val pendingIntent = PendingIntent.getBroadcast(context, usedT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                usedT += 1
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
+            }
             val editor = sharedPreferences.edit()
             editor.putString("Alarm ${slot[0]} End", (usedT-1).toString())
             editor.apply()
@@ -346,11 +388,41 @@ class ReminderFragment : Fragment() {
 
     }
 
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Notification Title"
+            val descriptionText = "Notification Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager = requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
 }
 
 class Receiver: BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-        val pass = intent?.getStringExtra("pass")
-        d("bomoh", "Receiver: ${Date()} || $pass")
+    override fun onReceive(context: Context, intent: Intent?) {
+        val title = intent?.getStringExtra("Title")
+        d("bomoh", "Receiver: ${Date()} || $title || this is Alarm")
+        val CHANNEL_ID = "channel_id_mysugarbud"
+        val notificationId = 101
+
+        fun sendNotification(likedName: String) {
+            val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("My Sugar Bud")
+                .setContentText("Reminder: $likedName")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(context)) {
+                notify(notificationId, builder.build())
+            }
+        }
+
+        sendNotification(title.toString())
+
     }
 }
