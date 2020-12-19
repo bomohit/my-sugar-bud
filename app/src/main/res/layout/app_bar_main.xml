@@ -9,14 +9,15 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.MySugarBud.AppBarOverlay">
+        android:theme="@style/ToolbarTheme">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.MySugarBud.PopupOverlay" />
+            android:paddingRight="10dp"
+            app:popupTheme="@style/ToolbarTheme" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

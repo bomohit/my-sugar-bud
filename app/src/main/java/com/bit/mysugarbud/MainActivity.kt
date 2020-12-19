@@ -2,6 +2,7 @@ package com.bit.mysugarbud
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.marginRight
 import com.bit.mysugarbud.ui.login.selection
 
 class MainActivity : AppCompatActivity() {
@@ -66,6 +68,8 @@ class MainActivity : AppCompatActivity() {
                 params.width = ViewGroup.LayoutParams.MATCH_PARENT
                 appCompatTextView.layoutParams = params
                 appCompatTextView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+                appCompatTextView.textSize = 35f
+                appCompatTextView
             }
         }
     }

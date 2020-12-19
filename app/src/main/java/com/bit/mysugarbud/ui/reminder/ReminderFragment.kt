@@ -36,7 +36,7 @@ class ReminderFragment : Fragment() {
     var t = 0
     var usedT = 0
     var endT = 0
-    var alarmCount = 1
+    var slot = mutableListOf<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,10 +48,10 @@ class ReminderFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_reminder, container, false)
         val uid = (activity as MainActivity).uid
-        val sharedPreferences = requireActivity().getSharedPreferences("$uid", Context.MODE_PRIVATE)
 
         for ( i in 1..5) {
 
+            val sharedPreferences = requireActivity().getSharedPreferences("$uid Alarm $i", Context.MODE_PRIVATE)
             val tit = sharedPreferences.getString("Alarm $i Title", "")
             if (!tit.isNullOrEmpty()) {
                 val time = sharedPreferences.getString("Alarm $i Time", "").toString()
@@ -59,11 +59,13 @@ class ReminderFragment : Fragment() {
                 val end = sharedPreferences.getString("Alarm $i End", "").toString()
                 t = end.toInt() + 1
                 usedT = t
-                reminder.add(Reminder(uid, tit, time, day))
-                alarmCount = i+1
-                d("bomoh", "sharedPreferences: time:$time, day:$day, end:$end, t:$t, usedT:$usedT, alarmCount:$alarmCount")
+                val profile = "$uid Alarm $i"
+                reminder.add(Reminder(profile, tit, time, day))
+
+                d("bomoh", "sharedPreferences: time:$time, day:$day, end:$end, t:$t, usedT:$usedT")
             } else {
-                d("bomoh", "sharedPreferences: EMPTY : $i")
+                slot.add(i)
+                d("bomoh", "sharedPreferences: EMPTY : $i : slot: $slot : size: ${slot.size}")
                 // USE FOR DELETING SHAREDPREFERENCE
 //                val editor = sharedPreferences.edit().clear().commit()
             }
@@ -90,7 +92,7 @@ class ReminderFragment : Fragment() {
         val builder = AlertDialog.Builder(requireContext(), R.style.MyDialogTheme)
 
         view.findViewById<Button>(R.id.buttonAddReminder).setOnClickListener {
-            if (alarmCount > 5) {
+            if (slot.size == 0) {
                 Snackbar.make(requireView(), "Failed : Alarm full ", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -142,18 +144,19 @@ class ReminderFragment : Fragment() {
                                         selDay += "Sun"
                                     }
                                 }
-                                val prof = (activity as MainActivity).uid
+                                val uid = (activity as MainActivity).uid
 
                                 // SAVE THE ALARM TITLE AND TIME AND DAY AND T IN MEMORY
-                                val sharedPreferences = requireActivity().getSharedPreferences("$prof", Context.MODE_PRIVATE)
+                                val sharedPreferences = requireActivity().getSharedPreferences("$uid Alarm ${slot[0]}", Context.MODE_PRIVATE)
                                 val editor  = sharedPreferences.edit()
-                                editor.putString("Alarm $alarmCount Title", title)
-                                editor.putString("Alarm $alarmCount Time", time)
-                                editor.putString("Alarm $alarmCount Day", selDay)
-                                editor.putString("Alarm $alarmCount Start", t.toString())
+                                editor.putString("Alarm ${slot[0]} Title", title)
+                                editor.putString("Alarm ${slot[0]} Time", time)
+                                editor.putString("Alarm ${slot[0]} Day", selDay)
+                                editor.putString("Alarm ${slot[0]} Start", t.toString())
                                 editor.apply()
                                 // continue -> createAlarm()
-                                reminder.add(Reminder(prof, title, time, selDay.toString()))
+                                val profile = "$uid Alarm ${slot[0]}"
+                                reminder.add(Reminder(profile, title, time, selDay.toString()))
                                 rv(requireView())
                                 createAlarm()
                             }
@@ -183,7 +186,7 @@ class ReminderFragment : Fragment() {
     private fun createAlarm() {
         val cal = Calendar.getInstance()
         val prof = (activity as MainActivity).uid
-        val sharedPreferences = requireActivity().getSharedPreferences("$prof", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("$prof Alarm ${slot[0]}", Context.MODE_PRIVATE)
         for (i in day) {
             if (i == "Monday") {
                 cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
@@ -281,11 +284,12 @@ class ReminderFragment : Fragment() {
 //                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
 //            }
             val editor = sharedPreferences.edit()
-            editor.putString("Alarm $alarmCount End", (usedT-1).toString())
+            editor.putString("Alarm ${slot[0]} End", (usedT-1).toString())
             editor.apply()
         }
-        alarmCount += 1
-        d("bomoh", "incremnent alarm count by 1 : current Alarm Count:$alarmCount")
+//      REMOVE FROM SLOT
+        slot.removeAt(0)
+        d("bomoh", "slot after remove: $slot")
 
         endT = usedT
         H = 0
